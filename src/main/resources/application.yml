@@ -17,6 +17,7 @@ spring:
         format_sql: true
         # 여러개 쿼리 나가야할 것을 in으로 한번에 가져옴
         default_batch_fetch_size: 100
+        use_sql_comments: true
 
 logging:
   level:
