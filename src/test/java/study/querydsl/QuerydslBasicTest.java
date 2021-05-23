@@ -630,4 +630,43 @@ public class QuerydslBasicTest {
     private BooleanExpression allEq(String usernameCond, Integer ageCond) {
         return usernameEq(usernameCond).and(ageEq(ageCond));
     }
+    // 이름 바꾸기
+    @Test
+    public void bulkUpdate() {
+
+        long count = queryFactory
+                .update(member)
+                .set(member.username, "비회원")
+                .where(member.age.lt(28))
+                .execute();
+
+        em.flush();
+        em.clear();
+
+        List<Member> fetch = queryFactory
+                .selectFrom(member)
+                .fetch();
+        for (Member fetch1 : fetch) {
+            System.out.println("fetch1 = " + fetch1);
+        }
+    }
+
+    // 나이 더하기 전부
+    @Test
+    public void bulkAdd() {
+        long execute = queryFactory
+                .update(member)
+                .set(member.age, member.age.add(1)) // 마이너스는 add에 -1
+                .execute();
+
+    }
+
+    @Test
+    public void bulkDelete() {
+        long execute = queryFactory
+                .delete(member)
+                .where(member.age.gt(10))
+                .execute();
+
+    }
 }
