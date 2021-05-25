@@ -17,12 +17,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import study.querydsl.dto.MemberDto;
-import study.querydsl.dto.QMemberDto;
-import study.querydsl.dto.UserDto;
+import study.querydsl.dto.*;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
+import study.querydsl.repository.MemberJpaRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -40,6 +39,9 @@ public class QuerydslBasicTest {
     EntityManager em;
     // 필드 레벨로 가져가도 괜찮음. 동시성문제 X
     JPAQueryFactory queryFactory;
+
+    @Autowired
+    MemberJpaRepository memberJpaRepository;
 
     @BeforeEach
     public void before() {
@@ -698,5 +700,18 @@ public class QuerydslBasicTest {
         for (String s : fetch) {
             System.out.println("s = " + s);
         }
+    }
+
+    @Test
+    public void searchTest() {
+
+        MemberSearchCondition condition = new MemberSearchCondition();
+        condition.setAgeGoe(35);
+        condition.setAgeLoe(40);
+        condition.setTeamName("teamB");
+
+        List<MemberTeamDto> result = memberJpaRepository.searchByBuilder(condition);
+
+        assertThat(result).extracting("username").containsExactly("member4");
     }
 }
