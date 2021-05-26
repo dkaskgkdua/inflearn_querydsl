@@ -29,6 +29,7 @@ import javax.persistence.PersistenceUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.util.StringUtils.hasText;
 import static study.querydsl.entity.QMember.*;
 import static study.querydsl.entity.QTeam.team;
 
@@ -714,4 +715,18 @@ public class QuerydslBasicTest {
 
         assertThat(result).extracting("username").containsExactly("member4");
     }
+    @Test
+    public void searchTest2() {
+
+        MemberSearchCondition condition = new MemberSearchCondition();
+        condition.setAgeGoe(35);
+        condition.setAgeLoe(40);
+        condition.setTeamName("teamB");
+
+        List<MemberTeamDto> result = memberJpaRepository.search(condition);
+
+        assertThat(result).extracting("username").containsExactly("member4");
+    }
+
+
 }
