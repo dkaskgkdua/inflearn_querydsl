@@ -39,6 +39,7 @@ public class QuerydslBasicTest {
     @Autowired
     EntityManager em;
     // 필드 레벨로 가져가도 괜찮음. 동시성문제 X
+    @Autowired
     JPAQueryFactory queryFactory;
 
     @Autowired
